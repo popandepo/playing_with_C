@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int GetLen(const char* str);
 int GetChars(const char* str[]);
@@ -13,17 +12,17 @@ struct Person {
     Name* Name;
 };
 
-void FreePerson(Person* p) {
-    free(p->Name);
-    free(p);
-}
-
 struct Name {
     char* First;
     char* Middle;
     char* Last;
 };
 
+/// CreateName - creates a new name struct
+/// @param first - the first name
+/// @param middle - the middle name
+/// @param last - the last name
+/// @return the new name struct
 Name* CreateName(char* first, char* middle, char* last) {
     Name* n = malloc(sizeof(Name));
     n->First = first;
@@ -42,6 +41,10 @@ struct MemoryHolder {
 /// @param ptr - the pointer to add to the memory holder
 /// @return the memory holder with the new pointer added
 MemoryHolder* Add(MemoryHolder* mem, void* ptr) {
+    if (mem == NULL) {
+        return NULL;
+    }
+
     void** newArr = realloc(mem->ptr, (mem->count + 1) * sizeof(void*));
 
     if (newArr == NULL) {
@@ -75,6 +78,7 @@ void FreeMemory(MemoryHolder* mem) {
 
 int main(void) {
     MemoryHolder* mem = CreateMemoryHolder();
+
     Person* p = malloc(sizeof(Person));
     p->ID = 1;
     p->Name = CreateName("John", "Doe", "Smith");
@@ -82,6 +86,7 @@ int main(void) {
     Person* p2 = malloc(sizeof(Person));
     p2->ID = 2;
     p2->Name = CreateName("Jane", "Doe", "Smith");
+
     mem = Add(mem, p->Name);
     mem = Add(mem, p);
     mem = Add(mem, p2->Name);
@@ -113,8 +118,6 @@ int main(void) {
     FreeMemory(mem);
     return 0;
 }
-
-
 
 /// GetLen - returns the human-readable length of a string
 /// @param str - the string to get the length of
