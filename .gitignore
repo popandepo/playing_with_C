@@ -14,9 +14,11 @@
 *.lo
 *.dll
 *.so
+.idea/
 *.so.*
 *.dylib
 *.exe
+cmake-build-debug/
 *.out
 *.app
 *.i*86
